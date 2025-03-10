@@ -239,9 +239,15 @@
 
 #else			/* }{ */
 
-#define LUA_ROOT	"/usr/local/"
+//TODO: Need to figure this out more intelligently
+#define LUA_ROOT	"/data/home/root/"
 #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
 #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
+
+// #define LUA_ROOT	"/usr/local/"
+// #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+// #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
+
 
 #if !defined(LUA_PATH_DEFAULT)
 #define LUA_PATH_DEFAULT  \
