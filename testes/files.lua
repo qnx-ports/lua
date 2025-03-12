@@ -83,7 +83,7 @@ assert(io.output() ~= io.stdout)
 
 if not _port then   -- invalid seek
   local status, msg, code = io.stdin:seek("set", 1000)
-  assert(not status and type(msg) == "string" and type(code) == "number")
+  assert(not status and type(msg) == "string" and type(code) == "number") --Fails here.
 end
 
 assert(io.output():seek() == 0)

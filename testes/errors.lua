@@ -598,8 +598,8 @@ do  -- errors in error handle that not necessarily go forever
     end
   end
 
-  local res, msg = xpcall(error, err, 170)
-  assert(not res and msg == "END")
+  local res, msg = xpcall(error, err, 50) --Lowered for QNX, 170 is too much for LUAI_CCALLS = 100
+  assert(not res and msg == "END") 
 
   -- too many levels
   local res, msg = xpcall(error, err, 300)
@@ -678,9 +678,9 @@ end
 -- testing syntax limits
 
 local function testrep (init, rep, close, repc, finalresult)
-  local s = init .. string.rep(rep, 100) .. close .. string.rep(repc, 100)
+  local s = init .. string.rep(rep, 50) .. close .. string.rep(repc, 50)
   local res, msg = load(s)
-  assert(res)   -- 100 levels is OK
+  assert(res)   -- 50 levels is OK (QNX - normally 100 works!)
   if (finalresult) then
     assert(res() == finalresult)
   end

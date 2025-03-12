@@ -73,6 +73,11 @@
 #define LUA_READLINELIB		"libreadline.so"
 #endif
 
+#if defined(LUA_USE_QNX)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN    	/* QNX Does not need -ldl (part of -lc, which is automatic)*/
+#endif
+
 
 #if defined(LUA_USE_MACOSX)
 #define LUA_USE_POSIX
@@ -239,14 +244,10 @@
 
 #else			/* }{ */
 
-//TODO: Need to figure this out more intelligently
-#define LUA_ROOT	"/data/home/root/"
+
+#define LUA_ROOT	"/usr/local/"
 #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
 #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
-
-// #define LUA_ROOT	"/usr/local/"
-// #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
-// #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
 
 
 #if !defined(LUA_PATH_DEFAULT)
@@ -819,8 +820,31 @@
 ** without modifying the main part of the file.
 */
 
+#ifdef __QNX__
+//Setting QNX search paths
+//TODO: Need to figure this out more intelligently
+#define LUA_ROOT	"/system/"
+#define LUA_LDIR	LUA_ROOT "share/" LUA_VDIR "/"
+#define LUA_CDIR	LUA_ROOT "lib/" LUA_VDIR "/"
 
+//QNX Machines cannot handle large numbers of calls - it causes SIGSEGV Stack overflows
+//KNOWN MAX FAILURE 100 - OVER call.lua FAILS TO SIGSEGV
+//KNOWN MIN FAILURE 110 - UNDER heavy.lua FAILS TO CSTACK
+#ifndef LUAI_MAXCCALLS
+#define LUAI_MAXCCALLS 100
+#endif
+//#define LUAI_ASSERT
+//#define LUA_USE_APICHECK
 
+#define LUA_PATH_DEFAULT  \
+		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
+		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
+		"./?.lua;" "./?/init.lua"
+
+#define LUA_CPATH_DEFAULT \
+		LUA_CDIR"?.so;" LUA_CDIR"loadall.so;" "./?.so"
+
+#endif //__QNX__
 
 
 #endif

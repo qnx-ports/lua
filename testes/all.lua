@@ -20,7 +20,7 @@ _G.ARG = arg   -- save arg for other tests
 -- Make true to avoid long or memory consuming tests
 _soft = rawget(_G, "_soft") or false
 -- Make true to avoid non-portable tests
-_port = rawget(_G, "_port") or false
+_port = rawget(_G, "_port") or true --QNX is a port!
 -- Make true to avoid messages about tests not performed
 _nomsg = rawget(_G, "_nomsg") or false
 

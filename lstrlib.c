@@ -1309,8 +1309,12 @@ static int str_format (lua_State *L) {
         case 'a': case 'A':
           checkformat(L, form, L_FMTFLAGSF, 1);
           addlenmod(form, LUA_NUMBER_FRMLEN);
+          lua_Number ln = luaL_checknumber(L, arg);
+          if(!isnan(ln))
           nb = lua_number2strx(L, buff, maxitem, form,
-                                  luaL_checknumber(L, arg));
+                                  ln); //string cstring
+          else
+          nb = snprintf(buff, maxitem, "%s", "nan");
           break;
         case 'f':
           maxitem = MAX_ITEMF;  /* extra space for '%f' */
